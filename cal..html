@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+  <meta charset="UTF-8">
+  <title>多功能计算器</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333333;
+    }
+
+    .calculator {
+      background-color: #ffffff;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      padding: 20px;
+      display: inline-block;
+    }
+
+    .calculator label {
+      display: inline-block;
+      width: 80px;
+      text-align: left;
+    }
+
+    .calculator input[type="number"] {
+      width: 150px;
+      height: 30px;
+      padding: 5px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #cccccc;
+    }
+
+    .calculator button {
+      width: 100px;
+      height: 30px;
+      margin-top: 10px;
+      font-size: 16px;
+      color: #ffffff;
+      background-color: #337ab7;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .calculator button:hover {
+      background-color: #23527c;
+    }
+
+    .result {
+      margin-top: 20px;
+    }
+
+    .result label {
+      display: inline-block;
+      width: 120px;
+      text-align: left;
+    }
+
+    .result input[type="text"] {
+      width: 200px;
+      height: 30px;
+      padding: 5px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #cccccc;
+      background-color: #f9f9f9;
+      readonly: true;
+    }
+  </style>
+</head>
+<body>
+  <h1>计算器</h1>
+
+  <div class="calculator">
+    <h2>圆的计算</h2>
+    <label for="radius">半径：</label>
+    <input type="number" id="radius">
+    <label for="pi">π：</label>
+    <input type="number" id="pi">
+    <br>
+    <button onclick="calculateCircleArea()">计算面积</button>
+    <button onclick="calculateCirclePerimeter()">计算周长</button>
+
+    <div class="result">
+      <label>结果：</label>
+      <input type="text" id="circle-result" readonly>
+    </div>
+  </div>
+
+  <div class="calculator">
+    <h2>三角形的计算</h2>
+    <label for="triangle-side-a">边a：</label>
+    <input type="number" id="triangle-side-a">
+    <label for="triangle-side-b">边b：</label>
+    <input type="number" id="triangle-side-b">
+    <label for="triangle-side-c">边c：</label>
+    <input type="number" id="triangle-side-c">
+    <br>
+    <button onclick="calculateTriangleArea()">计算面积</button>
+    <button onclick="calculateTrianglePerimeter()">计算周长</button>
+
+    <div class="result">
+      <label>结果：</label>
+      <input type="text" id="triangle-result" readonly>
+    </div>
+  </div>
+
+  <div class="calculator">
+    <h2>正方形和长方形的计算</h2>
+    <label for="rectangle-length">长度：</label>
+    <input type="number" id="rectangle-length">
+    <label for="rectangle-width">宽度：</label>
+    <input type="number" id="rectangle-width">
+    <br>
+    <button onclick="calculateRectangleArea()">计算面积</button>
+    <button onclick="calculateRectanglePerimeter()">计算周长</button>
+
+    <div class="result">
+      <label>结果：</label>
+      <input type="text" id="rectangle-result" readonly>
+    </div>
+  </div>
+
+  <script>
+    // 计算圆的面积
+    function calculateCircleArea() {
+      var radius = parseFloat(document.getElementById('radius').value);
+      var pi = parseFloat(document.getElementById('pi').value);
+      var area = pi * radius * radius;
+      document.getElementById('circle-result').value = area.toFixed(2);
+    }
+
+    // 计算圆的周长
+    function calculateCirclePerimeter() {
+      var radius = parseFloat(document.getElementById('radius').value);
+      var pi = parseFloat(document.getElementById('pi').value);
+      var perimeter = 2 * pi * radius;
+      document.getElementById('circle-result').value = perimeter.toFixed(2);
+    }
+
+    // 计算三角形的面积
+    function calculateTriangleArea() {
+      var sideA = parseFloat(document.getElementById('triangle-side-a').value);
+      var sideB = parseFloat(document.getElementById('triangle-side-b').value);
+      var sideC = parseFloat(document.getElementById('triangle-side-c').value);
+      var perimeter = (sideA + sideB + sideC) / 2;
+      var area = Math.sqrt(perimeter * (perimeter - sideA) * (perimeter - sideB) * (perimeter - sideC));
+      document.getElementById('triangle-result').value = area.toFixed(2);
+    }
+
+    // 计算三角形的周长
+    function calculateTrianglePerimeter() {
+      var sideA = parseFloat(document.getElementById('triangle-side-a').value);
+      var sideB = parseFloat(document.getElementById('triangle-side-b').value);
+      var sideC = parseFloat(document.getElementById('triangle-side-c').value);
+      var perimeter = sideA + sideB + sideC;
+      document.getElementById('triangle-result').value = perimeter.toFixed(2);
+    }
+
+    // 计算正方形和长方形的面积
+    function calculateRectangleArea() {
+      var length = parseFloat(document.getElementById('rectangle-length').value);
+      var width = parseFloat(document.getElementById('rectangle-width').value);
+      var area = length * width;
+      document.getElementById('rectangle-result').value = area.toFixed(2);
+    }
+
+    // 计算正方形和长方形的周长
+    function calculateRectanglePerimeter() {
+      var length = parseFloat(document.getElementById('rectangle-length').value);
+      var width = parseFloat(document.getElementById('rectangle-width').value);
+      var perimeter = 2 * (length + width);
+      document.getElementById('rectangle-result').value = perimeter.toFixed(2);
+    }
+  </script>
+</body>
+</html>
