@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>贪吃蛇游戏</title>
+    <style>
+        body{
+        text-align:center;
+        }
+        #game-board {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            border: 1px solid #000;
+        }
+
+        .snake {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: green;
+        }
+
+        .food {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-board"></div>
+
+    <script>
+        var boardSize = 20; // 游戏面板的尺寸
+        var snake = [{x: 10, y: 10}]; // 蛇的初始位置
+        var direction = 'right'; // 初始方向
+        var food = {x: 15, y: 10}; // 食物的初始位置
+
+        // 初始化游戏面板
+        var gameBoard = document.getElementById('game-board');
+
+        function createGameBoard() {
+            for (var y = 0; y < boardSize; y++) {
+                for (var x = 0; x < boardSize; x++) {
+                    var cell = document.createElement('div');
+                    cell.style.left = x * 20 + 'px';
+                    cell.style.top = y * 20 + 'px';
+                    cell.classList.add('cell');
+                    gameBoard.appendChild(cell);
+                }
+            }
+        }
+
+        // 绘制蛇
+        function drawSnake() {
+            var snakeElements = document.getElementsByClassName('snake');
+            while (snakeElements[0]) {
+                snakeElements[0].parentNode.removeChild(snakeElements[0]);
+            }
+
+            snake.forEach(function (segment) {
+                var snakeSegment = document.createElement('div');
+                snakeSegment.style.left = segment.x * 20 + 'px';
+                snakeSegment.style.top = segment.y * 20 + 'px';
+                snakeSegment.classList.add('snake');
+                gameBoard.appendChild(snakeSegment);
+            });
+        }
+
+        // 绘制食物
+        function drawFood() {
+            var foodElement = document.getElementsByClassName('food');
+            if (foodElement[0]) {
+                foodElement[0].parentNode.removeChild(foodElement[0]);
+            }
+
+            var foodCell = document.createElement('div');
+            foodCell.style.left = food.x * 20 + 'px';
+            foodCell.style.top = food.y * 20 + 'px';
+            foodCell.classList.add('food');
+            gameBoard.appendChild(foodCell);
+        }
+
+        // 更新游戏状态
+        function updateGame() {
+            var head = Object.assign({}, snake[0]);
+            switch (direction) {
+                case 'up':
+                    head.y -= 1;
+                    break;
+                case 'down':
+                    head.y += 1;
+                    break;
+                case 'left':
+                    head.x -= 1;
+                    break;
+                case 'right':
+                    head.x += 1;
+                    break;
+            }
+
+            snake.unshift(head);
+
+            if (head.x === food.x && head.y === food.y) {
+                // 吃到食物，生成新的食物
+                food.x = Math.floor(Math.random() * boardSize);
+                food.y = Math.floor(Math.random() * boardSize);
+            } else {
+                // 没有吃到食物，移除尾部
+                snake.pop();
+            }
+
+            // 判断游戏结束条件
+            if (
+                head.x < 0 || head.y < 0 ||
+                head.x >= boardSize || head.y >= boardSize ||
+                snake.slice(1).some(function (segment) {
+                    return segment.x === head.x && segment.y === head.y;
+                })
+            ) {
+                clearInterval(gameInterval);
+                alert('游戏结束！点击刷新重来！');
+            }
+
+            drawSnake();
+            drawFood();
+        }
+
+        // 处理键盘事件
+        document.addEventListener('keydown', function (event) {
+            switch (event.key) {
+                case 'ArrowUp':
+                    if (direction !== 'down') {
+                        direction = 'up';
+                    }
+                    break;
+                case 'ArrowDown':
+                    if (direction !== 'up') {
+                        direction = 'down';
+                    }
+                    break;
+                case 'ArrowLeft':
+                    if (direction !== 'right') {
+                        direction = 'left';
+                    }
+                    break;
+                case 'ArrowRight':
+                    if (direction !== 'left') {
+                        direction = 'right';
+                    }
+                    break;
+            }
+        });
+
+        // 启动游戏
+        createGameBoard();
+        drawSnake();
+        drawFood();
+        var gameInterval = setInterval(updateGame, 200);
+    </script>
+</body>
+</html>
